@@ -94,9 +94,10 @@ model MyWorker {
   name         String?
   mobileNumber String?
   lat          Float?
-  lan          Float?
+  lan            Float?
   occupation   String
-  role         String?
-  dailyWage    Float
-  age          Int?
+  address      String?
+  role      String?
+  dailyWage Float
+  age       Int?
 }
