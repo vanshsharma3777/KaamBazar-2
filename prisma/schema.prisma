@@ -7,12 +7,28 @@ datasource db {
   provider = "postgresql"
 }
 
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime? @map("email_verified")
+  name          String?
+  image         String?
+
+  accounts Account[]
+  sessions Session[]
+
+  vendor MyVendor?
+  worker MyWorker?
+  user   MyUser?
+
+  createdAt DateTime @default(now())
+
+  @@map("users")
+}
+
 model Account {
-  id                String   @id
-  myVendorId        String
-  myWorkerId        String
-  myUserId          String
-  workId            String
+  id                String  @id @default(cuid())
+  userId            String
   type              String
   provider          String
   providerAccountId String
@@ -23,96 +39,19 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-  MyUser            MyUser   @relation(fields: [myUserId], references: [id], onDelete: Cascade)
-  MyVendor          MyVendor @relation(fields: [myVendorId], references: [id], onDelete: Cascade)
-  MyWorker          MyWorker @relation(fields: [myWorkerId], references: [id], onDelete: Cascade)
-  Work              Work     @relation(fields: [workId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
 
-model MyUser {
-  name         String?   @db.VarChar(50)
-  mobileNumber String?   @db.VarChar(10)
-  profilePhoto String?   @default("")
-  work         String[]
-  email        String?   @unique
-  address      String?   @default("")
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime
-  id           String    @id
-  password     String    @default("")
-  lat          Float?    @default(0.0)
-  role         String?
-  lng          Float?    @default(0.0)
-  Account      Account[]
-  Session      Session[]
-  Work         Work[]
-}
-
-model MyVendor {
-  ownerName     String?   @db.VarChar(50)
-  mobileNumber  String?   @db.VarChar(10)
-  profilePhoto  String?   @default("")
-  shopName      String?   @db.VarChar(100)
-  shopPhoto     String?   @default("")
-  email         String?   @unique @db.VarChar(50)
-  password      String?   @default("")
-  address       String?   @db.VarChar(255)
-  rating        Float?    @default(0)
-  bussinessType String?   @default("")
-  feedback      String?   @default("")
-  gstNumber     String?   @db.VarChar(20)
-  age           Int?
-  role          String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime
-  id            String    @id
-  lat           Float?    @default(0.0)
-  lng           Float?    @default(0.0)
-  Account       Account[]
-  Session       Session[]
-}
-
-model MyWorker {
-  name         String?   @db.VarChar(50)
-  mobileNumber String?   @db.VarChar(10)
-  profilePhoto String?   @default("")
-  photo        String?   @default("")
-  video        String?   @default("")
-  dailyWage    Float?    @default(0)
-  address      String?   @db.VarChar(255)
-  rating       Float?    @default(0)
-  occupation   String?   @default("")
-  feedback     String?   @default("")
-  pastDeals    String[]
-  presentDeals String[]
-  age          Int?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime
-  id           String    @id
-  email        String    @unique
-  password     String    @default("")
-  lat          Float?    @default(0.0)
-  lng          Float?    @default(0.0)
-  role         String?
-  Account      Account[]
-  Session      Session[]
-  Work         Work[]
-}
-
 model Session {
-  id           String    @id
-  sessionToken String    @unique
-  myUserId     String?
-  myWorkerId   String?
-  myVendorId   String?
-  workId       String?
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
   expires      DateTime
-  MyUser       MyUser?   @relation(fields: [myUserId], references: [id], onDelete: Cascade)
-  MyVendor     MyVendor? @relation(fields: [myVendorId], references: [id], onDelete: Cascade)
-  MyWorker     MyWorker? @relation(fields: [myWorkerId], references: [id], onDelete: Cascade)
-  Work         Work?     @relation(fields: [workId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
@@ -123,20 +62,41 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Work {
-  id              String    @id
-  workType        String
-  description     String
-  photos          String[]
-  alternateNumber String?
-  workId          String
-  createdAt       DateTime  @default(now())
-  isActive        Boolean   @default(true)
-  lat             Float     @default(0.0)
-  lng             Float     @default(0.0)
-  myWorkerId      String?
-  Account         Account[]
-  Session         Session[]
-  MyWorker        MyWorker? @relation(fields: [myWorkerId], references: [id])
-  MyUser          MyUser    @relation(fields: [workId], references: [id])
+model MyUser {
+  id           String  @id @default(cuid())
+  userId       String  @unique
+  user         User    @relation(fields: [userId], references: [id])
+  mobileNumber String?
+  address      String?
+  role         String?
+  lat          Float?
+  name         String?
+  lng          Float?
+}
+
+model MyVendor {
+  id           String  @id @default(cuid())
+  userId       String  @unique
+  user         User    @relation(fields: [userId], references: [id])
+  mobileNumber String?
+  address      String?
+  shopName     String?
+  role         String?
+  rating       Float?
+  age          Int?
+  name         String?
+}
+
+model MyWorker {
+  id           String  @id @default(cuid())
+  userId       String  @unique
+  user         User    @relation(fields: [userId], references: [id])
+  name         String?
+  mobileNumber String?
+  lat          Float?
+  lan          Float?
+  occupation   String
+  role         String?
+  dailyWage    Float
+  age          Int?
 }
