@@ -1,83 +1,53 @@
 import prisma from "@/lib/prisma";
 import { sessionDeatils } from "@/lib/sessionDetails";
-import { error } from "console";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ role: string }> }) {
-    const session = await sessionDeatils()
+    const session = await sessionDeatils();
     if (!session) {
-        return NextResponse.json({
-            error: "Unauthorised (user/dahboard)",
-            success: false
-        }, { status: 401 })
+        return NextResponse.json({ error: "Unauthorised", success: false }, { status: 401 });
     }
-    const { role: role } = await params
-    const person = await prisma.user.findUnique({
-        where: {
-            email: session.user?.email!
-        }
-    })
-    if (!person) {
-        return NextResponse.json({
-            error: "Person deatils not found ([role]/dahboard)",
-            success: false
-        }, { status: 402 })
-    }
-    if (role === 'user') {
-        const userDeatils = await prisma.myUser.findFirst({
-            where: {
-                userId: person.id
-            },
-            select: {
-                name: true,
-                mobileNumber: true,
-                address: true,
-                role: true
-            }
-        })
-        console.log(userDeatils)
 
-        return NextResponse.json({
-            success: true,
-            userDeatils
-        })
+    const { role } = await params;
+    // Normalize role string
+    const normalizedRole = role.toLowerCase().trim();
+
+    const person = await prisma.user.findUnique({
+        where: { email: session.user?.email! }
+    });
+
+    if (!person) {
+        return NextResponse.json({ error: "User not found", success: false }, { status: 404 });
     }
-    else if (role === 'vendor') {
-        const userDeatils = await prisma.myVendor.findFirst({
-            where: {
-                userId: person.id
-            },
-            select: {
-                name: true,
-                shopName: true,
-                mobileNumber: true,
-                address: true,
-                role: true,
-                age: true
-            }
-        })
-        return NextResponse.json({
-            success:true,
-            userDeatils
-        })
+
+    let userDetails = null;
+
+    if (normalizedRole === 'user') {
+        userDetails = await prisma.myUser.findUnique({
+            where: { userId: person.id },
+            select: { name: true, mobileNumber: true, address: true, role: true }
+        });
+    } else if (normalizedRole === 'vendor') {
+        userDetails = await prisma.myVendor.findUnique({
+            where: { userId: person.id },
+            select: { name: true, shopName: true, mobileNumber: true, address: true, role: true, age: true }
+        });
+    } else if (normalizedRole === 'worker') {
+        userDetails = await prisma.myWorker.findUnique({
+            where: { userId: person.id },
+            select: { name: true, mobileNumber: true, occupation: true, dailyWage: true, role: true, age: true }
+        });
     }
-    else if (role === 'worker') {
-        const userDeatils = await prisma.myWorker.findFirst({
-            where: {
-                userId: person.id
-            },
-            select: {
-                name: true,
-                mobileNumber: true,
-                occupation: true,
-                dailyWage:true,
-                role: true,
-                age: true
-            }
-        })
+    if (!userDetails) {
         return NextResponse.json({
-            success:true,
-            userDeatils
-        })
+            success: false,
+            msg: `${normalizedRole} profile record missing in database`,
+            userDetails: null 
+        }, { status: 200 }); 
     }
+    return NextResponse.json({
+        success: true,
+        msg: normalizedRole,
+        userDetails
+    });
 }
