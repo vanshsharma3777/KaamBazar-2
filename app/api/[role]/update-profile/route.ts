@@ -15,6 +15,7 @@ export async function PUT(request:NextRequest , {params}:{params:Promise <{role:
     }
 
     const { role: role } = await params
+    const normalizedRole = role.toLowerCase().trim()
     const existingPerson = await prisma.user.findFirst({
         where: {
             email: session.user?.email!
@@ -26,7 +27,7 @@ export async function PUT(request:NextRequest , {params}:{params:Promise <{role:
             error: "User not found. Signin again"
         }, { status: 402 })
     }
-    if (role === 'user') {
+    if (normalizedRole === 'user') {
         const isPersonExists = await prisma.myUser.findFirst({
             where: {
                 userId: existingPerson?.id
@@ -70,7 +71,7 @@ export async function PUT(request:NextRequest , {params}:{params:Promise <{role:
 
         })
     }
-    else if (role === 'vendor') {
+    else if (normalizedRole === 'vendor') {
         const isPersonExists = await prisma.myUser.findFirst({
             where: {
                 userId: existingPerson?.id
@@ -110,7 +111,7 @@ export async function PUT(request:NextRequest , {params}:{params:Promise <{role:
 
         })
     }
-    else if (role === 'worker') {
+    else if (normalizedRole === 'worker') {
         const isPersonExists = await prisma.myUser.findFirst({
             where: {
                 userId: existingPerson?.id

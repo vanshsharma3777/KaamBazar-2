@@ -9,9 +9,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     }
 
     const { role } = await params;
-    // Normalize role string
-    const normalizedRole = role.toLowerCase().trim();
-
+        const normalizedRole = role.toLowerCase().trim();
     const person = await prisma.user.findUnique({
         where: { email: session.user?.email! }
     });
@@ -25,7 +23,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     if (normalizedRole === 'user') {
         userDetails = await prisma.myUser.findUnique({
             where: { userId: person.id },
-            select: { name: true, mobileNumber: true, address: true, role: true }
+            select: { name: true, mobileNumber: true, address: true, role: true , lat:true , lng:true }
         });
     } else if (normalizedRole === 'vendor') {
         userDetails = await prisma.myVendor.findUnique({
@@ -35,9 +33,10 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     } else if (normalizedRole === 'worker') {
         userDetails = await prisma.myWorker.findUnique({
             where: { userId: person.id },
-            select: { name: true, mobileNumber: true, occupation: true, dailyWage: true, role: true, age: true }
+            select: { name: true, mobileNumber: true, occupation: true, dailyWage: true, role: true, age: true , lat:true , lan:true }
         });
     }
+    console.log(userDetails)
     if (!userDetails) {
         return NextResponse.json({
             success: false,
