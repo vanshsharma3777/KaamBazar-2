@@ -23,18 +23,36 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     if (normalizedRole === 'user') {
         userDetails = await prisma.myUser.findUnique({
             where: { userId: person.id },
-            select: { name: true, mobileNumber: true, address: true, role: true , lat:true , lng:true }
+            select: { name: true, mobileNumber: true, address: true, role: true , lat:true , lng:true  }
         });
+        if(!userDetails){
+            return NextResponse.json({
+                success:false,
+                error:"Create profile first"
+            },{status:404} )
+        }
     } else if (normalizedRole === 'vendor') {
         userDetails = await prisma.myVendor.findUnique({
             where: { userId: person.id },
             select: { name: true, shopName: true, mobileNumber: true, address: true, role: true, age: true }
         });
+        if(!userDetails){
+            return NextResponse.json({
+                success:false,
+                error:"Create profile first"
+            },{status:404})
+        }
     } else if (normalizedRole === 'worker') {
         userDetails = await prisma.myWorker.findUnique({
             where: { userId: person.id },
             select: { name: true, mobileNumber: true, occupation: true, dailyWage: true, role: true, age: true , lat:true , lan:true }
         });
+        if(!userDetails){
+            return NextResponse.json({
+                success:false,
+                error:"Create profile first"
+            },{status:404})
+        }
     }
     console.log(userDetails)
     if (!userDetails) {
@@ -42,7 +60,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
             success: false,
             msg: `${normalizedRole} profile record missing in database`,
             userDetails: null 
-        }, { status: 200 }); 
+        }); 
     }
     return NextResponse.json({
         success: true,

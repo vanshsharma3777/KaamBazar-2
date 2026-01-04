@@ -5,9 +5,8 @@ const getLatitudeLongitude = async (
     console.warn("Empty address provided")
     return null
   }
-
-  const apiKey = process.env.MAP_API_KEY
-
+  const apiKey = process.env.NEXT_PUBLIC_MAP_API_KEY
+  console.log(apiKey)
   if (!apiKey) {
     throw new Error("MAP_API_KEY is missing in environment variables")
   }

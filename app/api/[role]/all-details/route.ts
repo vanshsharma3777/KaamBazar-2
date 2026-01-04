@@ -41,7 +41,6 @@ export async function GET(request:NextRequest , {params}:{params:Promise <{role:
         const allPerson = await prisma.myWorker.findMany({
         where:{role:normalizedRole},
         omit:{
-            id:true,
             userId:true
         }
     }) 
@@ -60,7 +59,6 @@ export async function GET(request:NextRequest , {params}:{params:Promise <{role:
         const allPerson = await prisma.myVendor.findMany({
         where:{role:normalizedRole},
         omit:{
-            id:true,
             userId:true
         }
     }) 

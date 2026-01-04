@@ -1,29 +1,24 @@
 "use client";
 
-import React, { JSX, useEffect, useState } from "react";
+import React, { JSX, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
 import { Loader } from "../components/loader";
+import { sessionDeatils } from "@/lib/sessionDetails";
 
-export default function UserHeader(): JSX.Element | null {
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [username, setUsername] = useState("U");
-
+export default function UserHeader({ tab }: { tab: string }): JSX.Element | null {
+  const [isProfileOpen, setIsProfileOpen] = React.useState(false);
   const router = useRouter();
-  const pathname = usePathname();
-  const { data: session, status } = useSession();
+  const { data:session ,status } = useSession();
+
   useEffect(() => {
     if (status === "unauthenticated") {
       router.replace("/api/auth/signin");
     }
   }, [status, router]);
-  useEffect(() => {
-    if (session?.user?.name) {
-      setUsername(session.user.name.charAt(0).toUpperCase());
-    }
-  }, [session]);
+
   if (status === "loading") {
     return (
       <div className="flex justify-center py-6">
@@ -31,65 +26,73 @@ export default function UserHeader(): JSX.Element | null {
       </div>
     );
   }
-  if (status === "unauthenticated") {
-    return null;
-  }
-
+  if (status === "unauthenticated") return null;
   const navLinks = [
-    { name: "Profile", href: "/dashboard/user/profile" },
-    { name: "Workers", href: "/dashboard/user/workers" },
-    { name: "Vendors", href: "/dashboard/user/vendors" },
-    { name: "Create New Work", href: "/dashboard/user/create" },
-    { name: "Past Work", href: "/dashboard/user/history" },
+    { name: "Profile", href: "/user/profile", id: "profile", color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50" },
+    { name: "Workers", href: "/user/get-worker", id: "workers", color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50" },
+    { name: "Vendors", href: "/user/get-vendor", id: "vendors", color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50" },
+    { name: "Create New Work", href: "/dashboard/user", id: "create", color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50" },
+    { name: "Past Work", href: "/user/past-work", id: "history", color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50" },
   ];
-
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#020617]">
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#020617] backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
-
-        <Link href="/dashboard/user" className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
-            👤
-          </div>
-          <span className="font-black text-2xl text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">
+          <span className="font-black text-4xl cursor-pointer  text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 " 
+           onClick={()=>{
+            router.push('/')
+           }} >
             KaamBazar
           </span>
-        </Link>
-
-        <nav className="hidden md:flex gap-4">
-          {navLinks.map(link => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={pathname === link.href ? "text-white" : "text-slate-400"}
-            >
-              {link.name}
-            </Link>
-          ))}
+        
+        <nav className="hidden md:flex gap-2">
+          {navLinks.map((link) => {
+            const isActive = tab === link.id;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 border ${
+                  isActive 
+                    ? `${link.color}` 
+                    : "text-slate-400 border-transparent hover:bg-white/5 hover:text-slate-200"
+                }`}
+              >
+                {link.name}
+              </Link>
+            );
+          })}
         </nav>
-
         <div className="relative">
           <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => setIsProfileOpen(!isProfileOpen)}
-            className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold"
+            className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold flex items-center justify-center shadow-lg shadow-blue-500/20"
           >
-            {username}
+            {session?.user?.name?.charAt(0).toUpperCase()}
           </motion.button>
-
           <AnimatePresence>
             {isProfileOpen && (
               <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                className="absolute right-0 mt-3 w-52 bg-slate-900 border border-white/10 rounded-xl"
+                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                className="absolute right-0 mt-3 w-52 bg-slate-900 border border-white/10 rounded-xl overflow-hidden shadow-2xl"
               >
                 <Link
-                  href="/dashboard/user/profile"
-                  className="block px-4 py-3 hover:bg-white/5"
+                  href="/user/profile"
+                  className="block px-4 py-3 text-slate-300 hover:bg-white/5 hover:text-white transition-colors"
                 >
-                  ⚙️ Profile
+                  ⚙️ Profile Settings
                 </Link>
+                <button 
+                  onClick={() => 
+                    signOut({callbackUrl:'/api/auth/signin'})
+                  }
+                  className="w-full text-left block px-4 py-3 text-red-400 hover:bg-red-500/10 transition-colors"
+                >
+                  Logout
+                </button>
               </motion.div>
             )}
           </AnimatePresence>

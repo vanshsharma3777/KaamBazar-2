@@ -1,0 +1,18 @@
+-- CreateTable
+CREATE TABLE "Work" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "photo" TEXT NOT NULL,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "lat" DOUBLE PRECISION NOT NULL DEFAULT 0.0,
+    "lng" DOUBLE PRECISION NOT NULL DEFAULT 0.0,
+
+    CONSTRAINT "Work_pkey" PRIMARY KEY ("id")
+);
+
+-- AddForeignKey
+ALTER TABLE "Work" ADD CONSTRAINT "Work_userId_fkey" FOREIGN KEY ("userId") REFERENCES "MyUser"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -63,41 +63,60 @@ model VerificationToken {
 }
 
 model MyUser {
-  id           String  @id @default(cuid())
-  userId       String  @unique
-  user         User    @relation(fields: [userId], references: [id])
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id])
   mobileNumber String?
   address      String?
   role         String?
   lat          Float?
   name         String?
   lng          Float?
+  work         Work[]
+
 }
 
 model MyVendor {
-  id           String  @id @default(cuid())
-  userId       String  @unique
-  user         User    @relation(fields: [userId], references: [id])
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id])
   mobileNumber String?
   address      String?
   shopName     String?
   role         String?
+
   rating       Float?
   age          Int?
   name         String?
 }
 
 model MyWorker {
-  id           String  @id @default(cuid())
-  userId       String  @unique
-  user         User    @relation(fields: [userId], references: [id])
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id])
   name         String?
   mobileNumber String?
   lat          Float?
-  lan            Float?
+  lan          Float?
   occupation   String
   address      String?
-  role      String?
-  dailyWage Float
-  age       Int?
+  role         String?
+  dailyWage    Float
+  age          Int?
+
+}
+
+model Work {
+  id          String   @id @default(cuid())
+  userId      String
+  title       String
+  description String
+  photo       String[]
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  lat         Float?   @default(0.0)
+  lng         Float?   @default(0.0)
+
+  user MyUser @relation(fields: [userId], references: [id])
 }
