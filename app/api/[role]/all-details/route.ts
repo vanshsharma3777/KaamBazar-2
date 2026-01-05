@@ -32,7 +32,7 @@ export async function GET(request:NextRequest , {params}:{params:Promise <{role:
                 error:`No ${role} found`
             },{status:402})
         }
-    return NextResponse.json({
+    return NextResponse.json({ 
         success:true,
         allPerson
     })
