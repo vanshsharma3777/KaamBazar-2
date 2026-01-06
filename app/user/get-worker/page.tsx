@@ -47,6 +47,9 @@ export default function UserProfilePage() {
         try {
           setLoader(true)
           const res = await axios.get(`/api/worker/all-details`)
+          if(res.status===201 && !res.data.success){
+            router.replace('/user/create-profile')
+          }
           const data = res.data.allPerson
           setWorkerDetails(data || [])
         } catch (err) {

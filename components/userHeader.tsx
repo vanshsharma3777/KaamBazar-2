@@ -31,7 +31,7 @@ export default function UserHeader({ tab }: { tab: string }): JSX.Element | null
     { name: "Profile", href: "/user/profile", id: "profile", color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50" },
     { name: "Workers", href: "/user/get-worker", id: "workers", color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50" },
     { name: "Vendors", href: "/user/get-vendor", id: "vendors", color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50" },
-    { name: "Create New Work", href: "/dashboard/user", id: "create", color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50" },
+    { name: "Create New Work", href: "/user/create-work", id: "create", color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50" },
     { name: "Past Work", href: "/user/get-work", id: "history", color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50" },
   ];
   return (

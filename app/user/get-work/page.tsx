@@ -85,6 +85,10 @@ export default function CreateNewWork() {
                 router.replace('/api/auth/signin')
             }
             const res = await axios.get(`/api/work`)
+            if(!res.data.success){
+                router.replace("/user/create-profile")
+                return
+            }
             console.log(res.data)
             if (res.data.allWork.length != 0) {
                 setAllWork(res.data.allWork)
@@ -132,6 +136,12 @@ export default function CreateNewWork() {
   } catch (error) {
     setPastWorks(prev => prev.filter(w => w.id !== work.id));
     setActiveWorks(prev => [...prev, work]);
+    if(axios.isAxiosError(error)){
+        const errorStatus = error.response?.status;
+        if(errorStatus === 404){
+            router.replace('/user/create-profile')
+        }
+    }
 
     toast.error("Failed to mark work complete");
   } finally {

@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({
             error: "User Not Found. Signin again.",
             success: false
-        }, { status: 402 })
+        }, { status: 404 })
     }
 
     const { title, description, photo, isActive, lat, lng } = await request.json()
@@ -86,9 +86,9 @@ export async function GET(request: NextRequest) {
 
     if (!getUser) {
         return NextResponse.json({
-            error: "User Not Found. Signin again.",
+            error: "Create profile first",
             success: false
-        }, { status: 402 })
+        })
     }
 
    const allWork = await prisma.work.findMany({

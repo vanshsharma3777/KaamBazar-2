@@ -44,6 +44,12 @@ export default function UserProfilePage() {
           try {
               setLoader(true);
       const res = await axios.get(`/api/vendor/all-details`);
+      if(!res.data.success && res.status===201){
+        router.replace('/user/create-profile')
+      }
+      if(!res.data.success && res.data.status===404){
+        router.push('/api/auth/signin')
+      }
       setVendorDetails(res.data.allPerson || []);
   } catch (err) {
       console.error("API error:", err);

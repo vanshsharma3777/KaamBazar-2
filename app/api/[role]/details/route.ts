@@ -29,7 +29,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
             return NextResponse.json({
                 success:false,
                 error:"Create profile first"
-            },{status:404} )
+            }, {status:201} )
         }
     } else if (normalizedRole === 'vendor') {
         userDetails = await prisma.myVendor.findUnique({
@@ -40,7 +40,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
             return NextResponse.json({
                 success:false,
                 error:"Create profile first"
-            },{status:404})
+            }, {status:201})
         }
     } else if (normalizedRole === 'worker') {
         userDetails = await prisma.myWorker.findUnique({
@@ -51,7 +51,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
             return NextResponse.json({
                 success:false,
                 error:"Create profile first"
-            },{status:404})
+            }, {status:201})
         }
     }
     console.log(userDetails)
