@@ -32,7 +32,7 @@ export default function UserHeader({ tab }: { tab: string }): JSX.Element | null
     { name: "Workers", href: "/user/get-worker", id: "workers", color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50" },
     { name: "Vendors", href: "/user/get-vendor", id: "vendors", color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50" },
     { name: "Create New Work", href: "/dashboard/user", id: "create", color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50" },
-    { name: "Past Work", href: "/user/past-work", id: "history", color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50" },
+    { name: "Past Work", href: "/user/get-work", id: "history", color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50" },
   ];
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-[#020617] backdrop-blur-md">

@@ -132,7 +132,10 @@ export default function Dashboard() {
       toast.success("Work posted successfully!", {
         icon: '🚀',
         style: { background: '#064e3b', color: '#fff', border: '1px solid #10b981' }
-      });
+      })
+   }, 1000);
+   setTimeout(() => {
+    router.replace('/user/get-work')
    }, 1000);
   };
     if (status === "loading") {

@@ -107,7 +107,7 @@ export default function UserProfilePage() {
                   <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-emerald-500 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
                   <motion.img
                     whileHover={{ scale: 1.05 }}
-                    src={session.user?.image! || '/pro.png' } 
+                    src={ session.user?.image ||'/pro.png' } 
                     alt="Profile"
                     className="relative w-24 h-24 md:w-32 md:h-32 rounded-full border-2 border-white/10 bg-slate-800 object-cover"
                   />
