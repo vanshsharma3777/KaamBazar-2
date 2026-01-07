@@ -63,9 +63,9 @@ model VerificationToken {
 }
 
 model MyUser {
-  id           String   @id @default(cuid())
-  userId       String   @unique
-  user         User     @relation(fields: [userId], references: [id])
+  id           String  @id @default(cuid())
+  userId       String  @unique
+  user         User    @relation(fields: [userId], references: [id])
   mobileNumber String?
   address      String?
   role         String?
@@ -73,27 +73,26 @@ model MyUser {
   name         String?
   lng          Float?
   work         Work[]
-
 }
 
 model MyVendor {
-  id           String   @id @default(cuid())
-  userId       String   @unique
-  user         User     @relation(fields: [userId], references: [id])
+  id           String  @id @default(cuid())
+  userId       String  @unique
+  user         User    @relation(fields: [userId], references: [id])
   mobileNumber String?
   address      String?
   shopName     String?
   role         String?
 
-  rating       Float?
-  age          Int?
-  name         String?
+  rating Float?
+  age    Int?
+  name   String?
 }
 
 model MyWorker {
-  id           String   @id @default(cuid())
-  userId       String   @unique
-  user         User     @relation(fields: [userId], references: [id])
+  id           String  @id @default(cuid())
+  userId       String  @unique
+  user         User    @relation(fields: [userId], references: [id])
   name         String?
   mobileNumber String?
   lat          Float?
@@ -103,7 +102,6 @@ model MyWorker {
   role         String?
   dailyWage    Float
   age          Int?
-
 }
 
 model Work {
@@ -111,6 +109,7 @@ model Work {
   userId      String
   title       String
   description String
+  address     String
   photo       String[]
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())

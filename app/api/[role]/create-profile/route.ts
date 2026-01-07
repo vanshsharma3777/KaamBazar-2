@@ -122,9 +122,10 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
                 success: false
             }, { status: 405 })
         }
-        const { name, mobileNumber, occupation, dailyWage, age, address } = await request.json()
+        let { name, mobileNumber, dailyWage , age ,occupation, address } = await request.json()
         const location = await getLatitudeLongitude(address)
-
+             dailyWage = Number(dailyWage)
+             age = Number(age)
             const createdworker = await prisma.myWorker.create({
                 data: {
                     name,

@@ -133,7 +133,6 @@ export default function UserProfilePage() {
                     <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-bold uppercase tracking-wider">
                       User
                     </span>
-
                   </div>
                 </div>
               </div>
