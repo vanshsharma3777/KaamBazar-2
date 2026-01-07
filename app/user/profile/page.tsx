@@ -89,6 +89,10 @@ export default function UserProfilePage() {
     });
   };
 
+  const capitalName = (str: string)=>{
+     return str ? str.split(' ').map(s =>s.charAt(0).toUpperCase()+s.slice(1)).join(" ") : "User"
+  }
+
   if (status === 'loading' || loader) {
     return <Loader></Loader>
   }
@@ -123,7 +127,7 @@ export default function UserProfilePage() {
 
                 <div>
                   <h1 className="text-3xl md:text-4xl font-black tracking-tight text-white mb-1">
-                    {userDetails?.name}
+                    { userDetails?.name?capitalName(userDetails.name): "User"}
                   </h1>
                   <div className="flex items-center gap-2">
                     <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-bold uppercase tracking-wider">
