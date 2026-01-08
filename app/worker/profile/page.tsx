@@ -6,7 +6,6 @@ import { motion } from 'framer-motion';
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Loader } from '@/components/loader';
-import UserHeader from "@/components/userHeader";
 import {
     User,
     Mail,
@@ -21,6 +20,7 @@ import {
     Building2,
     Users
 } from 'lucide-react';
+import WorkerHeader from "@/components/workerHeader";
 
 export default function WorkerProfilePage() {
     interface WorkerDetails {
@@ -67,10 +67,10 @@ export default function WorkerProfilePage() {
         getResponse();
     }, [router, status]);
 
-    const capitalName = (str: string , msg:string) => {
+    const capitalName = (str: string, msg: string) => {
         return str ? str.split(' ').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(" ") : msg;
     };
-    
+
 
     if (status === 'loading' || loader) {
         return <Loader />;
@@ -79,15 +79,13 @@ export default function WorkerProfilePage() {
     if (status === "authenticated") {
         return (
             <div className="bg-[#020617] min-h-screen w-screen overflow-x-hidden">
-                <UserHeader tab={"profile"} />
+                <WorkerHeader tab={"profile"} />
 
                 <div className="h-full w-full text-slate-200 p-4 md:p-8 relative overflow-hidden">
-                    {/* Ambient Background Glows */}
                     <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/10 blur-[120px] rounded-full pointer-events-none" />
                     <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-cyan-600/10 blur-[120px] rounded-full pointer-events-none" />
 
                     <div className="max-w-5xl mx-auto relative z-10">
-                        {/* Header Section */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -109,11 +107,11 @@ export default function WorkerProfilePage() {
 
                                 <div>
                                     <h1 className="text-3xl md:text-4xl font-black tracking-tight text-white mb-1">
-                                        {workerDetails?.name ? capitalName(workerDetails.name , "Worker") : "Worker"}
+                                        {workerDetails?.name ? capitalName(workerDetails.name, "Worker") : "Worker"}
                                     </h1>
                                     <div className="flex items-center gap-2">
                                         <span className="px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 text-xs font-bold uppercase tracking-wider flex items-center gap-1">
-                                            <Briefcase size={12} /> {workerDetails?.occupation ? capitalName(workerDetails.occupation , "Worker") : "Worker"}
+                                            <Briefcase size={12} /> {workerDetails?.occupation ? capitalName(workerDetails.occupation, "Worker") : "Worker"}
                                         </span>
                                     </div>
                                 </div>
@@ -141,12 +139,12 @@ export default function WorkerProfilePage() {
                                 </h3>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-y-8 gap-x-4">
-                                    <InfoItem icon={<Briefcase className="text-blue-400" />} label="Occupation" value={capitalName(workerDetails?.occupation! , "Worker")} />
+                                    <InfoItem icon={<Briefcase className="text-blue-400" />} label="Occupation" value={capitalName(workerDetails?.occupation!, "Worker")} />
                                     <InfoItem icon={<IndianRupee className="text-emerald-400" />} label="Daily Wage" value={`${workerDetails?.dailyWage} / Day`} />
                                     <InfoItem icon={<Phone className="text-cyan-400" />} label="Phone Number" value={workerDetails?.mobileNumber!} />
                                     <InfoItem icon={<Calendar className="text-purple-400" />} label="Age" value={`${workerDetails?.age} Years`} />
                                     <div className="md:col-span-2">
-                                        <InfoItem icon={<MapPin className="text-rose-400" />} label="Work Address" value={workerDetails?.address ? capitalName(workerDetails.address , "Unable to fetch") : "Unable to fetch"} />
+                                        <InfoItem icon={<MapPin className="text-rose-400" />} label="Work Address" value={workerDetails?.address ? capitalName(workerDetails.address, "Unable to fetch") : "Unable to fetch"} />
                                     </div>
                                     <div className="md:col-span-2">
                                         <InfoItem icon={<Mail className="text-indigo-400" />} label="Email Address" value={session.user?.email!} />
@@ -188,8 +186,6 @@ export default function WorkerProfilePage() {
 
     return null;
 }
-
-// Sub-components
 function InfoItem({ icon, label, value }: { icon: React.ReactNode, label: string, value: string }) {
     return (
         <div className="flex items-start gap-4 group">

@@ -37,11 +37,12 @@ export async function POST(request: NextRequest) {
         }, { status: 404 })
     }
 
-    const { title, description, photo, isActive, lat, lng } = await request.json()
+    const { title, description, photo, isActive, lat, lng , address } = await request.json()
     const createWork = await prisma.work.create({
         data: {
             isActive: isActive,
             userId: getUser.id,
+            address,
             title,
             description,
             lat: Number(lat),

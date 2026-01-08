@@ -38,7 +38,6 @@ export default function UserProfilePage() {
   useEffect(() => {
     async function getResponse() {
       setLoader(true)
-      console.log(status)
       if (status === 'unauthenticated') {
         router.replace('/api/auth/signin')
       }
@@ -46,11 +45,9 @@ export default function UserProfilePage() {
         try {
           const res = await axios.get(`/api/user/details`)
           const data = res.data.userDetails
-          console.log(res.data)
           if(!res.data.success && res.data.status ===201){
             router.replace('/use/create-profile')
           } 
-          console.log(data)
           setUserDetails(data)
           if (!data) {
             console.log("No details found for user:", res.data)

@@ -44,7 +44,7 @@ export default function RoleSelection() {
   }, [status, router]);
 
   const handleSelection = (role: string) => {
-    router.push(`user/profile`);
+    router.push(`${role}/profile`);
   };
 
   if (status === "loading") {

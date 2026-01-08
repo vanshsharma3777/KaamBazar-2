@@ -17,7 +17,6 @@ import {
 } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { Loader } from '@/components/loader';
-import { form } from 'framer-motion/client';
 
 export default function CreateWorkerProfilePage() {
   const router = useRouter();

@@ -109,7 +109,7 @@ model Work {
   userId      String
   title       String
   description String
-  address     String
+  address     String?
   photo       String[]
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())

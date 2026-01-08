@@ -7,7 +7,9 @@ import { useRouter } from "next/navigation";
 export default function Dahboard(){
     const router = useRouter()
     const { role } = useParams<{role : string}>();
+    console.log(role)
     if(role==='user'){
+        console.log("helllo")
         router.replace('/user/profile')
     } else if(role ==='vendor'){
         router.replace('/vendor/profile')
