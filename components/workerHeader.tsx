@@ -35,7 +35,7 @@ export default function WorkerHeader({ tab }: { tab: string }): JSX.Element | nu
     },
     { 
       name: "Active Works", 
-      href: "/worker/active-works", 
+      href: "/worker/active-work", 
       id: "active", 
       color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50" 
     },

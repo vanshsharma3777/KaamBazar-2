@@ -1,4 +1,5 @@
 import getLatitudeLongitude  from "./getLatitudeLongitude"
+import prisma from "./prisma"
 
 export async function getDistanceBetweenAddresses(
   address1: string,
@@ -13,6 +14,6 @@ export async function getDistanceBetweenAddresses(
     loc2.lat,
     loc2.lng
   )
-  return Number(distance.toFixed(2))
+  return Number(distance)
   }
 }

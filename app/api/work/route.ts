@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma";
 import { sessionDeatils } from "@/lib/sessionDetails";
 import { NextRequest, NextResponse } from "next/server";
 
-
+// user will post the new work
 export async function POST(request: NextRequest) {
     const session = await sessionDeatils()
     if (!session) {
@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
     })
 }
 
-
+// for user - user will get their list of work 
 export async function GET(request: NextRequest) {
     const session = await sessionDeatils()
     if (!session) {
@@ -112,3 +112,4 @@ export async function GET(request: NextRequest) {
     allWork
    })
 }
+

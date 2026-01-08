@@ -95,6 +95,7 @@ export default function Dashboard() {
         title: '',
         description: '',
         images: [] as File[],
+        address:'',
         lat: 0.0,
         lng: 0.0,
         isActive: true,
@@ -130,9 +131,10 @@ export default function Dashboard() {
     const submitWork = async () => {
         setLoading(true);
         setShowConfirm(false);
-        console.log(userDetails?.address)
-        formData.lat = userDetails?.lat as number
-        formData.lng = userDetails?.lng as number
+        console.log(formData.address)
+        const location = await getLatitudeLongitude(formData.address)
+        formData.lat = location?.lat as number
+        formData.lng = location?.lng as number
         const res = await axios.post('/api/work', formData)
         console.log
         setTimeout(() => {
@@ -197,6 +199,16 @@ export default function Dashboard() {
                                 className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-indigo-500 transition-all text-white placeholder:text-slate-600 resize-none"
                                 value={formData.description}
                                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-sm font-bold text-slate-400 uppercase tracking-widest ml-1">Work Address</label>
+                            <textarea
+                                rows={2}
+                                placeholder="Work address (where the work has to be done)"
+                                className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-indigo-500 transition-all text-white placeholder:text-slate-600 resize-none"
+                                value={formData.address}
+                                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                             />
                         </div>
                         <div className="space-y-2">
