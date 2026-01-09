@@ -39,12 +39,12 @@ export default function WorkerHeader({ tab }: { tab: string }): JSX.Element | nu
       id: "active", 
       color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50" 
     },
-    { 
-      name: "Past Works", 
-      href: "/worker/past-works", 
-      id: "history", 
-      color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50" 
-    },
+    // { 
+    //   name: "Past Works", 
+    //   href: "/worker/past-works", 
+    //   id: "history", 
+    //   color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50" 
+    // },
     { 
       name: "Update Profile", 
       href: "/worker/update-profile", 

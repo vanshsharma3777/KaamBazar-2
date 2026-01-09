@@ -133,6 +133,8 @@ export default function Dashboard() {
         setShowConfirm(false);
         console.log(formData.address)
         const location = await getLatitudeLongitude(formData.address)
+        console.log(location?.lat)
+        console.log(location?.lng)
         formData.lat = location?.lat as number
         formData.lng = location?.lng as number
         const res = await axios.post('/api/work', formData)
