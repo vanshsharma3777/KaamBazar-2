@@ -16,7 +16,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     });
 
     if (!person) {
-        return NextResponse.json({ error: "User not found", success: false }, { status: 404 });
+        return NextResponse.json({ error: "User not found", success: false }, { status: 404});
     }
 
     let userDetails = null;

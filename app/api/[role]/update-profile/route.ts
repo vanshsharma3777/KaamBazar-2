@@ -2,6 +2,7 @@ import getLatitudeLongitude from "@/lib/getLatitudeLongitude";
 import prisma from "@/lib/prisma";
 import { sessionDeatils } from "@/lib/sessionDetails";
 import { promises } from "dns";
+import { chownSync } from "fs";
 import { NextRequest, NextResponse } from "next/server";
 
 
@@ -39,7 +40,7 @@ export async function PUT(request:NextRequest , {params}:{params:Promise <{role:
                 success: false
             }, { status: 405 })
         }
-        const { name, address, mobileNumber } = await request.json()
+        const { name, address, mobileNumber  } = await request.json()
         const location = await getLatitudeLongitude(address)
         console.log(location?.lat)
         console.log(location?.lng)
@@ -72,7 +73,7 @@ export async function PUT(request:NextRequest , {params}:{params:Promise <{role:
         })
     }
     else if (normalizedRole === 'vendor') {
-        const isPersonExists = await prisma.myUser.findFirst({
+        const isPersonExists = await prisma.myVendor.findFirst({
             where: {
                 userId: existingPerson?.id
             }
@@ -83,24 +84,22 @@ export async function PUT(request:NextRequest , {params}:{params:Promise <{role:
                 success: false
             }, { status: 405 })
         }
-        const { name, address, mobileNumber, shopName, age } = await request.json()
+        const { ownerName, address, mobileNumber, shopName } = await request.json()
         const updatedvendor = await prisma.myVendor.update({
             where: {
                 userId: existingPerson.id!
             },
             data: {
-                name,
+                name:ownerName,
                 mobileNumber,
                 address,
                 shopName,
-                age
             },
             select:{
                 name:true,
                 mobileNumber:true,
                 address:true,
                 shopName:true,
-                age:true
             }
         })
 
@@ -112,21 +111,23 @@ export async function PUT(request:NextRequest , {params}:{params:Promise <{role:
         })
     }
     else if (normalizedRole === 'worker') {
-        const isPersonExists = await prisma.myUser.findFirst({
+        const isPersonExists = await prisma.myWorker.findFirst({
             where: {
                 userId: existingPerson?.id
             }
         })
         if (!isPersonExists) {
             return NextResponse.json({
-                error: "Profile already created (user/profile/create)",
+                error: "Profile already created (worker/profile/update)",
                 success: false
-            }, { status: 405 })
+            }, { status: 201})
         }
-        const { name, mobileNumber, age, dailyWage, occupation , address} = await request.json()
-        const location = await getLatitudeLongitude(address)
-        console.log(location?.lat)
-        console.log(location?.lng)
+
+        const body = await request.json();
+        console.log("BODY:", body);
+
+        const { name, mobileNumber, age, dailyWage, occupation , lat , lng, address} = body
+        const wages = Number(dailyWage)
         const updatedworker = await prisma.myWorker.update({
             where: {
                 userId: existingPerson.id!
@@ -135,9 +136,9 @@ export async function PUT(request:NextRequest , {params}:{params:Promise <{role:
                 name,
                 mobileNumber,
                 occupation,
-                dailyWage,
-                lat:location?.lat,
-                lan:location?.lng,
+                dailyWage:wages,
+                lat:lat,
+                lan:lng,
                 address,
                 age
             },

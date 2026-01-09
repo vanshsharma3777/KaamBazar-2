@@ -56,7 +56,7 @@ export default function WorkerHeader({ tab }: { tab: string }): JSX.Element | nu
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-[#020617] backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
-        <span className="font-black text-4xl cursor-pointer  text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 " 
+        <span className="font-black text-4xl cursor-pointer  text-transparent bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400 " 
            onClick={()=>{
             router.push('/')
            }} >

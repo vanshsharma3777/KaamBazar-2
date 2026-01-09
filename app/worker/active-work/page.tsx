@@ -7,6 +7,7 @@ import axios from "axios";
 import { Loader } from '../../../components/loader';
 import WorkerHeader from "@/components/workerHeader";
 import { on } from "events";
+import { useRouter } from "next/navigation";
 
 const getDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
     if (!lat1 || !lon1 || !lat2 || !lon2) return "N/A";
@@ -30,6 +31,7 @@ const getDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => 
 
 
 export default function ActiveWorkPage() {
+    const router = useRouter()
     const [activeWorks, setActiveWorks] = useState<any[]>([]);
     const [workerDetails, setWorkerDetails] = useState<{ lat: number, lan: number, occupation: string } | null>(null);
     const [selectedWork, setSelectedWork] = useState<any | null>(null);
@@ -53,6 +55,13 @@ export default function ActiveWorkPage() {
                     setActiveWorks(active);
                 }
             } catch (error) {
+                if(axios.isAxiosError(error)){
+                    const errorStatus = error.response?.status
+                    if(errorStatus===402){
+                        console.log("worker not signin")
+                        router.replace('/worker/create-profile')
+                    }
+                }
                 console.error("Error:", error);
             } finally {
                 setLoading(false);

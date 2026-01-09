@@ -27,7 +27,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             }
         },
         async redirect() {
-            return '/'
+            return '/role'
         }
     },
     secret: process.env.AUTH_SECRET,

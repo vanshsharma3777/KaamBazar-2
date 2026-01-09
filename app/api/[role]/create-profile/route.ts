@@ -82,7 +82,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
             }, { status: 405 })
         }
         const { name, mobileNumber, address, age, shopName } = await request.json()
-        
+        const ageInNumber = Number(age)
         const createdvendor = await prisma.myVendor.create({
                 data: {
                     name,
@@ -90,8 +90,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
                     mobileNumber,
                     shopName,
                     address,
-
-                    age,
+                    age:ageInNumber,
                     role
                 },
                 select: {
