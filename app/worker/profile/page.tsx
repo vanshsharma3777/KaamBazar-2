@@ -86,9 +86,9 @@ export default function WorkerProfilePage() {
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="flex flex-col md:flex-row items-center justify-between mb-12 gap-6"
+                            className="flex flex-col md:flex-row items-center justify-between mb-8 md:mb-12 gap-6 text-center md:text-left"
                         >
-                            <div className="flex items-center gap-6">
+                            <div className="flex flex-col md:flex-row items-center gap-6">
                                 <div className="relative group">
                                     <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
                                     <motion.img
@@ -102,23 +102,21 @@ export default function WorkerProfilePage() {
                                     </div>
                                 </div>
 
-                                <div>
-                                    <h1 className="text-3xl md:text-4xl font-black tracking-tight text-white mb-1">
-                                        {workerDetails?.name ? capitalName(workerDetails.name, "Worker") : "Worker"}
-                                    </h1>
-                                    <div className="flex items-center gap-2">
-                                        <span className="px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 text-xs font-bold uppercase tracking-wider flex items-center gap-1">
-                                            <Briefcase size={12} /> {workerDetails?.occupation ? capitalName(workerDetails.occupation, "Worker") : "Worker"}
-                                        </span>
-                                    </div>
-                                </div>
+                                <div className="flex flex-col items-center md:items-start">
+                <h1 className="text-2xl md:text-4xl font-black tracking-tight text-white mb-2">
+                    {workerDetails?.name ? capitalName(workerDetails.name, "Worker") : "Worker"}
+                </h1>
+                <span className="px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] md:text-xs font-bold uppercase tracking-wider flex items-center gap-1">
+                    <Briefcase size={12} /> {workerDetails?.occupation || "Worker"}
+                </span>
+            </div>
                             </div>
 
                             <motion.button
                                 onClick={() => router.push('/worker/update-profile')}
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                className="flex items-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl transition-all font-semibold text-sm"
+                                className="w-full md:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl transition-all font-semibold text-sm"
                             >
                                 <Edit3 size={18} /> Edit Profile
                             </motion.button>
@@ -129,13 +127,13 @@ export default function WorkerProfilePage() {
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: 0.1 }}
-                                className="md:col-span-2 p-8 rounded-[2.5rem] bg-slate-900/40 backdrop-blur-xl border border-white/10 shadow-2xl"
+                                className="lg:col-span-2 p-6 md:p-8 rounded-[2.5rem] bg-slate-900/40 backdrop-blur-xl border border-white/10 shadow-2xl"
                             >
-                                <h3 className="text-xl font-bold text-white mb-8 flex items-center gap-2">
+                                <h3 className="text-lg md:text-xl font-bold mb-6 md:mb-8 flex items-center gap-2">
                                     Professional Details
                                 </h3>
 
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-y-8 gap-x-4">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 md:gap-y-8 gap-x-4">
                                     <InfoItem icon={<Briefcase className="text-blue-400" />} label="Occupation" value={capitalName(workerDetails?.occupation!, "Worker")} />
                                     <InfoItem icon={<IndianRupee className="text-emerald-400" />} label="Daily Wage" value={`${workerDetails?.dailyWage} / Day`} />
                                     <InfoItem icon={<Phone className="text-cyan-400" />} label="Phone Number" value={workerDetails?.mobileNumber!} />
@@ -185,13 +183,17 @@ export default function WorkerProfilePage() {
 }
 function InfoItem({ icon, label, value }: { icon: React.ReactNode, label: string, value: string }) {
     return (
-        <div className="flex items-start gap-4 group">
-            <div className="p-3 rounded-2xl bg-white/5 group-hover:bg-white/10 transition-colors">
+        <div className="flex items-center sm:items-start gap-3 md:gap-4 group">
+            <div className="p-2.5 md:p-3 rounded-xl md:rounded-2xl bg-white/5 group-hover:bg-white/10 transition-colors">
                 {icon}
             </div>
-            <div>
-                <p className="text-[10px] font-black uppercase tracking-[0.15em] text-slate-500 mb-1">{label}</p>
-                <p className="text-base text-slate-200 font-semibold">{value || "Not Provided"}</p>
+            <div className="min-w-0"> 
+                <p className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.1em] md:tracking-[0.15em] text-slate-500 mb-0.5 md:mb-1">
+                    {label}
+                </p>
+                <p className="text-sm md:text-base text-slate-200 font-semibold truncate">
+                    {value || "Not Provided"}
+                </p>
             </div>
         </div>
     );
