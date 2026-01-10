@@ -31,7 +31,7 @@ export default function UpdateVendorProfilePage() {
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.replace('/api/auth/signin');
+      router.replace('/');
     }
     async function getData() {
         const res = await axios.get('/api/vendor/details');

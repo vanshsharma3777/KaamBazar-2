@@ -41,7 +41,7 @@ export default function WorkerProfilePage() {
         async function getResponse() {
             setLoader(true);
             if (status === 'unauthenticated') {
-                router.replace('/api/auth/signin');
+                router.replace('/');
             } else if (status === 'authenticated') {
                 try {
                     const res = await axios.get(`/api/worker/details`);
@@ -204,7 +204,7 @@ function SettingsLink({ icon, label }: { icon: React.ReactNode, label: string })
     return (
         <li onClick={() => {
             const newLabel = label.toLowerCase();
-            router.push(`/${newLabel}/home`);
+            router.push(`/${newLabel}/profile`);
         }} className="flex items-center justify-between text-slate-400 hover:text-white cursor-pointer transition-colors group">
             <div className="flex items-center gap-3">
                 {icon}

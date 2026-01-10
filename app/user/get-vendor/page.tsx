@@ -37,7 +37,7 @@ export default function UserProfilePage() {
     useEffect(() => {
         async function getResponse() {
       if (status === 'unauthenticated') {
-          router.replace('/api/auth/signin');
+          router.replace('/');
           return;
       }
       if (status === 'authenticated') {
@@ -48,7 +48,7 @@ export default function UserProfilePage() {
         router.replace('/user/create-profile')
       }
       if(!res.data.success && res.data.status===404){
-        router.push('/api/auth/signin')
+        router.push('/')
       }
       setVendorDetails(res.data.allVendor || []);   
   } catch (err) {

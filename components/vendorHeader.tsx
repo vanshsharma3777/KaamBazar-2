@@ -1,16 +1,18 @@
 "use client";
 
-import React, { JSX, useEffect } from "react";
+import React, { JSX, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { Loader } from "../components/loader";
+import { Menu, X } from "lucide-react";
 
 export default function VendorHeader({ tab }: { tab: string }): JSX.Element | null {
   const [isProfileOpen, setIsProfileOpen] = React.useState(false);
   const router = useRouter();
   const { data: session, status } = useSession();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -37,7 +39,7 @@ export default function VendorHeader({ tab }: { tab: string }): JSX.Element | nu
     },
     { 
       name: "Products", 
-      href: "/vendor/products", 
+      href: "/vendor/service", 
       id: "products", 
       color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50" 
     },
@@ -47,12 +49,13 @@ export default function VendorHeader({ tab }: { tab: string }): JSX.Element | nu
       id: "update", 
       color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50" 
     },
+    
   ];
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-[#020617] backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
-        <span className="font-black text-4xl cursor-pointer  text-transparent bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400 " 
+        <span className="font-black text-2xl md:text-4xl cursor-pointer  text-transparent bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400 " 
            onClick={()=>{
             router.push('/')
            }} >
@@ -78,8 +81,12 @@ export default function VendorHeader({ tab }: { tab: string }): JSX.Element | nu
           })}
         </nav>
 
-        <div className="relative">
-          <motion.button
+        <div className="flex items-center gap-2">
+          
+
+          <div className="relative hidden md:flex items-center">
+            <AnimatePresence>
+              <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsProfileOpen(!isProfileOpen)}
@@ -87,8 +94,6 @@ export default function VendorHeader({ tab }: { tab: string }): JSX.Element | nu
           >
             {session?.user?.name?.charAt(0).toUpperCase() || "V"}
           </motion.button>
-
-          <AnimatePresence>
             {isProfileOpen && (
               <motion.div
                 initial={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -118,8 +123,50 @@ export default function VendorHeader({ tab }: { tab: string }): JSX.Element | nu
               </motion.div>
             )}
           </AnimatePresence>
+          </div>
+          <button 
+            className="md:hidden p-2 text-slate-300 hover:text-white"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
         </div>
       </div>
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="md:hidden border-t border-white/10 bg-[#020617] overflow-hidden"
+          >
+            <div className="flex flex-col p-4 gap-2">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`px-4 py-4 rounded-xl text-lg font-semibold transition-all ${
+                    tab === link.id 
+                      ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" 
+                      : "text-slate-400 hover:bg-white/5"
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              ))}
+              <div className="">
+                <button 
+                  onClick={() => signOut({ callbackUrl: '/api/auth/signin' })}
+                  className="w-full text-left block px-4 py-4 rounded-xl text-lg text-red-400 hover:bg-red-500/10 transition-all"
+                >
+                  Logout
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

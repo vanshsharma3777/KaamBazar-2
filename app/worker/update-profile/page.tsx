@@ -37,7 +37,7 @@ export default function WorkerProfilePage() {
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.replace('/api/auth/signin');
+      router.replace('/');
     }
     async function getData(){
       const res = await axios.put('/api/worker/update-profile', formData);

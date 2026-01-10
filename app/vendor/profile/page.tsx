@@ -40,7 +40,7 @@ export default function VendorProfilePage() {
         async function getResponse() {
             setLoader(true);
             if (status === 'unauthenticated') {
-                router.replace('/api/auth/signin');
+                router.replace('/');
             } else if (status === 'authenticated') {
                 try {
                     const res = await axios.get(`/api/vendor/details`);

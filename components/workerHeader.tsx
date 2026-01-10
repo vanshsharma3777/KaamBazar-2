@@ -1,16 +1,19 @@
 "use client";
 
-import React, { JSX, useEffect } from "react";
+import React, { JSX, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { Loader } from "../components/loader";
+import { Menu, X } from "lucide-react";
 
 export default function WorkerHeader({ tab }: { tab: string }): JSX.Element | null {
-  const [isProfileOpen, setIsProfileOpen] = React.useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
   const { data: session, status } = useSession();
+
   useEffect(() => {
     if (status === "unauthenticated") {
       router.replace("/api/auth/signin");
@@ -26,6 +29,7 @@ export default function WorkerHeader({ tab }: { tab: string }): JSX.Element | nu
   }
 
   if (status === "unauthenticated") return null;
+
   const navLinks = [
     { 
       name: "Profile", 
@@ -39,12 +43,6 @@ export default function WorkerHeader({ tab }: { tab: string }): JSX.Element | nu
       id: "active", 
       color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50" 
     },
-    // { 
-    //   name: "Past Works", 
-    //   href: "/worker/past-works", 
-    //   id: "history", 
-    //   color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/50" 
-    // },
     { 
       name: "Update Profile", 
       href: "/worker/update-profile", 
@@ -56,14 +54,13 @@ export default function WorkerHeader({ tab }: { tab: string }): JSX.Element | nu
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-[#020617] backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
-        <span className="font-black text-4xl cursor-pointer  text-transparent bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400 " 
-           onClick={()=>{
-            router.push('/')
+        <span className="font-black text-2xl md:text-4xl cursor-pointer text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400" 
+           onClick={() => {
+             router.push('/')
            }} >
             KaamBazar
-          </span> 
-        
-        <nav className="hidden md:flex gap-2">
+        </span> 
+                <nav className="hidden md:flex gap-2">
           {navLinks.map((link) => {
             const isActive = tab === link.id;
             return (
@@ -81,47 +78,91 @@ export default function WorkerHeader({ tab }: { tab: string }): JSX.Element | nu
             );
           })}
         </nav>
-        <div className="relative">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setIsProfileOpen(!isProfileOpen)}
-            className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold flex items-center justify-center shadow-lg shadow-blue-500/20"
-          >
-            {session?.user?.name?.charAt(0).toUpperCase() || "W"}
-          </motion.button>
 
-          <AnimatePresence>
-            {isProfileOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                className="absolute right-0 mt-3 w-52 bg-slate-900 border border-white/10 rounded-xl overflow-hidden shadow-2xl"
+        <div className="flex items-center gap-2">
+          <div className="relative hidden md:flex items-center">
+            <AnimatePresence>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setIsProfileOpen(!isProfileOpen)}
+                className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold flex items-center justify-center shadow-lg shadow-blue-500/20"
               >
-                <div className="px-4 py-3 border-b border-white/5">
-                  <p className="text-xs text-slate-500">Logged in as Worker</p>
-                  <p className="text-sm font-medium text-slate-200 truncate">{session?.user?.name}</p>
-                </div>
-                
-                <Link
-                  href="/worker/profile"
-                  className="block px-4 py-3 text-slate-300 hover:bg-white/5 hover:text-white transition-colors"
+                {session?.user?.name?.charAt(0).toUpperCase() || "W"}
+              </motion.button>
+              {isProfileOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                  className="absolute right-0 mt-3 w-52 bg-slate-900 border border-white/10 rounded-xl overflow-hidden shadow-2xl"
                 >
-                  👤 View Profile
+                  <div className="px-4 py-3 border-b border-white/5">
+                    <p className="text-xs text-slate-500">Logged in as Worker</p>
+                    <p className="text-sm font-medium text-slate-200 truncate">{session?.user?.name}</p>
+                  </div>
+                  
+                  <Link
+                    href="/worker/profile"
+                    className="block px-4 py-3 text-slate-300 hover:bg-white/5 hover:text-white transition-colors text-sm"
+                    onClick={() => setIsProfileOpen(false)}
+                  >
+                    👤 View Profile
+                  </Link>
+                  
+                  <button 
+                    onClick={() => signOut({ callbackUrl: '/api/auth/signin' })}
+                    className="w-full text-left block px-4 py-3 text-red-400 hover:bg-red-500/10 transition-colors text-sm"
+                  >
+                    Logout
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+          <button 
+            className="md:hidden p-2 text-slate-300 hover:text-white"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
+        </div>
+      </div>
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="md:hidden border-t border-white/10 bg-[#020617] overflow-hidden"
+          >
+            <div className="flex flex-col p-4 gap-2">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`px-4 py-4 rounded-xl text-lg font-semibold transition-all ${
+                    tab === link.id 
+                      ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" 
+                      : "text-slate-400 hover:bg-white/5"
+                  }`}
+                >
+                  {link.name}
                 </Link>
-                
+              ))}
+              <div className="">
                 <button 
                   onClick={() => signOut({ callbackUrl: '/api/auth/signin' })}
-                  className="w-full text-left block px-4 py-3 text-red-400 hover:bg-red-500/10 transition-colors"
+                  className="w-full text-left block px-4 py-4 rounded-xl text-lg text-red-400 hover:bg-red-500/10 transition-all"
                 >
                   Logout
                 </button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

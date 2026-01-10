@@ -39,7 +39,7 @@ export default function UserProfilePage() {
     async function getResponse() {
       setLoader(true)
       if (status === 'unauthenticated') {
-        router.replace('/api/auth/signin')
+        router.replace('/')
       }
       else {
         try {
@@ -93,7 +93,7 @@ export default function UserProfilePage() {
   }
   if (status === "authenticated") {
     return (
-      <div className="bg-[#020617] h-screen w-screen overflow-x-hidden">
+      <div className="bg-[#020617] min-h-screen w-screen overflow-x-hidden">
         <UserHeader tab={"profile"}></UserHeader>
 
         <div className="h-full w-full text-slate-200 p-4 md:p-8 relative overflow-hidden">
@@ -209,7 +209,7 @@ export default function UserProfilePage() {
     return (
       <li onClick={()=>{
        const newLabel = label.charAt(0).toLowerCase()+label.slice(1)
-        router.push(`/${newLabel}/home`)
+        router.push(`/${newLabel}/profile`)
       }} className="flex items-center justify-between text-slate-400 hover:text-white cursor-pointer transition-colors group">
         <div className="flex items-center gap-3">
           {icon}

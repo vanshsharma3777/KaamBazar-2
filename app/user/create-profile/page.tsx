@@ -28,7 +28,7 @@ export default function CreateProfilePage() {
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.replace('/api/auth/signin');
+      router.replace('/');
     }
   }, [status, router]);
 

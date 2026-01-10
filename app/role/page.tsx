@@ -54,7 +54,7 @@ export default function RoleSelection() {
   }
   if (status === "authenticated") {
     return (
-      <div className="h-screen w-full bg-[#020617] flex flex-col items-center justify-center p-6 overflow-hidden relative">
+      <div className="min-h-screen w-full bg-[#020617] flex flex-col overflow-hidden items-center justify-center p-6  relative">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-600/10 blur-[120px] rounded-full pointer-events-none" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600/10 blur-[120px] rounded-full pointer-events-none" />
 

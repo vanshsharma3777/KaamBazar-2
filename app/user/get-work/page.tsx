@@ -82,7 +82,7 @@ export default function CreateNewWork() {
         async function getResponse() {
             setLoader(true)
             if (status === 'unauthenticated') {
-                router.replace('/api/auth/signin')
+                router.replace('/')
             }
             const res = await axios.get(`/api/work`)
             if(!res.data.success){

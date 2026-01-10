@@ -34,7 +34,7 @@ export default function CreateWorkerProfilePage() {
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.replace('/api/auth/signin');
+      router.replace('/');
     }
   }, [status, router]);
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {

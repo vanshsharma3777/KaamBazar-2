@@ -40,7 +40,7 @@ export default function UserProfilePage() {
   useEffect(() => {
     async function getResponse() {
       if (status === 'unauthenticated') {
-        router.replace('/api/auth/signin')
+        router.replace('/')
         return;
       }
       if (status === 'authenticated') {
