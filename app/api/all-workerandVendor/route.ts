@@ -3,7 +3,7 @@ import { sessionDeatils } from "@/lib/sessionDetails";
 import { all } from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: NextRequest, { params }: { params: Promise<{ role: string }> }) {
+export async function GET(request: NextRequest) {
     const session = await sessionDeatils()
     if (!session) {
         return NextResponse.json({ error: "Unauthorised", success: false }, { status: 401 });
