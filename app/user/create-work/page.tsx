@@ -67,7 +67,6 @@ export default function Dashboard() {
             else {
                 try {
                     const res = await axios.get(`/api/${role}/details`)
-                    console.log(res.data)
                     if (!res.data.success) {
                         router.replace('/user/create-profile')
                         return
@@ -78,7 +77,6 @@ export default function Dashboard() {
                         const data = res.data.userDetails
                         setUserDetails(data)
                         if (!data) {
-                            console.error("No details found for role:", role, res.data)
                             return
                         }
                     }
@@ -131,14 +129,10 @@ export default function Dashboard() {
     const submitWork = async () => {
         setLoading(true);
         setShowConfirm(false);
-        console.log(formData.address)
         const location = await getLatitudeLongitude(formData.address)
-        console.log(location?.lat)
-        console.log(location?.lng)
         formData.lat = location?.lat as number
         formData.lng = location?.lng as number
         const res = await axios.post('/api/work', formData)
-        console.log
         setTimeout(() => {
             setLoading(false);
             toast.success("Work posted successfully!", {

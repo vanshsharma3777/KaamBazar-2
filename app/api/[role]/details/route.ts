@@ -50,7 +50,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         });
         if(!userDetails){
             return NextResponse.json({
-                success:false,
+                success:true,
                 error:"Create profile first"
             }, {status:201})
         }

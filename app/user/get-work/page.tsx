@@ -89,7 +89,6 @@ export default function CreateNewWork() {
                 router.replace("/user/create-profile")
                 return
             }
-            console.log(res.data)
             if (res.data.allWork.length != 0) {
                 setAllWork(res.data.allWork)
             }
@@ -102,15 +101,12 @@ export default function CreateNewWork() {
 
     useEffect(() => {
         if (!allWork) return;
-        console.log(allWork)
         const active = allWork.filter(work=>work.isActive)
         const past = allWork.filter(work=>!work.isActive)
         setActiveWorks(active)
         setPastWorks(past)
     }, [allWork ])
 
-    console.log("active work: ", activeWorks)
-    console.log("past work :", pastWorks)
 
     const markAsComplete = async (work: Work) => {
         setCompletingId(work.id)
@@ -132,7 +128,6 @@ export default function CreateNewWork() {
     });
 
     const res = await axios.get(`/api/work/${work.id}`)
-    console.log(res.data)
   } catch (error) {
     setPastWorks(prev => prev.filter(w => w.id !== work.id));
     setActiveWorks(prev => [...prev, work]);

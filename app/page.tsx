@@ -26,7 +26,6 @@ import { useRouter } from 'next/navigation';
 export default function AboutKaamBazar() {
   const router = useRouter();
   const { data: session, status } = useSession();
-  console.log(status)
   useEffect(()=>{
     if(status==='authenticated'){
       router.replace("/role")

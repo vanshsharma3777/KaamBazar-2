@@ -45,7 +45,10 @@ export default function ActiveWorkPage() {
                     axios.get('/api/worker/details'),
                     axios.get('/api/all-work')
                 ]);
-
+                
+                if (workerRes.data.success && (workRes.status===201 || workerRes.status===201)) {
+                    router.replace('/worker/create-profile')
+                }
                 if (workerRes.data.success) {
                     setWorkerDetails(workerRes.data.userDetails);
                 }
@@ -58,7 +61,6 @@ export default function ActiveWorkPage() {
                 if(axios.isAxiosError(error)){
                     const errorStatus = error.response?.status
                     if(errorStatus===402){
-                        console.log("worker not signin")
                         router.replace('/worker/create-profile')
                     }
                 }

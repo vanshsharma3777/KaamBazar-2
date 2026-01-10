@@ -50,7 +50,6 @@ export default function UserProfilePage() {
           } 
           setUserDetails(data)
           if (!data) {
-            console.log("No details found for user:", res.data)
             router.replace('/user/create-profile')
             return
           }
@@ -79,7 +78,6 @@ export default function UserProfilePage() {
     getResponse()
   }, [router, status])
   const formatDate = (dateString: string) => {
-    console.log(dateString)
     const date = new Date(dateString);
     return date.toLocaleDateString('en-IN', {
       day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'

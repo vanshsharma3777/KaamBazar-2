@@ -41,7 +41,6 @@ export default function WorkerProfilePage() {
     }
     async function getData(){
       const res = await axios.put('/api/worker/update-profile', formData);
-      console.log(res.data)
       if ( res.status===201) {
         toast.success("Worker profile updated!");
         router.replace('/worker/profile');
@@ -91,7 +90,6 @@ export default function WorkerProfilePage() {
       toast.error("Failed to update profile. Please try again.");
       if(axios.isAxiosError(error)){
         if(error.response?.status===402){
-          console.log("worker profile not found")
           router.replace("/worker/create-profile")
         }
       }

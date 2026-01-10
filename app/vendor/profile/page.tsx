@@ -44,7 +44,6 @@ export default function VendorProfilePage() {
             } else if (status === 'authenticated') {
                 try {
                     const res = await axios.get(`/api/vendor/details`);
-                    console.log(res.data)
                     if (res.data.success === false || !res.data.userDetails) {
                         router.replace('/vendor/create-profile');
                         return;

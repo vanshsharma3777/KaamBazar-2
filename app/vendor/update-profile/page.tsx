@@ -35,7 +35,6 @@ export default function UpdateVendorProfilePage() {
     }
     async function getData() {
         const res = await axios.get('/api/vendor/details');
-        console.log(res.data)
       if(res.status===201 && res.data.success===false){
         router.replace("/vendor/create-profile")
       }
@@ -78,7 +77,6 @@ export default function UpdateVendorProfilePage() {
     try {
       setLoading(true);
       const res = await axios.put('/api/vendor/update-profile', formData);
-      console.log(res.data)
       if (res.status === 200) {
         toast.success("Profile updated successfully!");
         router.push('/vendor/profile');

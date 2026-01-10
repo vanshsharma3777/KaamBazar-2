@@ -43,14 +43,14 @@ export default function UserProfilePage() {
       if (status === 'authenticated') {
           try {
               setLoader(true);
-      const res = await axios.get(`/api/vendor/all-details`);
+      const res = await axios.get(`/api/all-workerandVendor`);
       if(!res.data.success && res.status===201){
         router.replace('/user/create-profile')
       }
       if(!res.data.success && res.data.status===404){
         router.push('/api/auth/signin')
       }
-      setVendorDetails(res.data.allPerson || []);
+      setVendorDetails(res.data.allVendor || []);   
   } catch (err) {
       console.error("API error:", err);
   } finally {
@@ -100,7 +100,7 @@ getResponse();
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
                 whileHover={{ y: -5 }}
-                onClick={() => router.push(`/vendor/detail/${vendor.id}`)}
+                onClick={() => router.push(`/vendor/detail/`)}
                 className="group cursor-pointer"
             >
                 <div className="relative h-full p-5 rounded-[1.5rem] bg-slate-900/60 backdrop-blur-md border border-white/5 hover:border-emerald-500/30 transition-all shadow-xl">

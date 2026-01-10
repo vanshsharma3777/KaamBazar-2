@@ -83,7 +83,6 @@ export default function CreateProfilePage() {
           return;
         }
       }
-      console.error("Profile creation error:", error);
       toast.error("An error occurred. Please try again.");
     } finally {
       setLoading(false);

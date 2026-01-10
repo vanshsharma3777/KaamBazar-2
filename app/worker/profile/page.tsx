@@ -46,15 +46,12 @@ export default function WorkerProfilePage() {
                 try {
                     const res = await axios.get(`/api/worker/details`);
                     const data = res.data.userDetails;
-                    console.log(res.data)
-                    if (res.data.success === false || !res.data) {
-                        console.log("Redirecting: Condition met", { success: res.data.success, data });
+                    if (res.data.success === true && res.status===201 ) {
                         router.replace('/worker/create-profile');
                         return;
                     }
                     setWorkerDetails(res.data.userDetails);
-                    console.log(data)
-                    console.log(res.data.userDetails)
+
                 } catch (error) {
                     if (axios.isAxiosError(error) && error.response?.status === 404) {
                         router.replace('/worker/create-profile');

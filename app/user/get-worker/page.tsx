@@ -46,14 +46,13 @@ export default function UserProfilePage() {
       if (status === 'authenticated') {
         try {
           setLoader(true)
-          const res = await axios.get(`/api/worker/all-details`)
+          const res = await axios.get(`/api/all-workerandVendor`)
           if(res.status===201 && !res.data.success){
             router.replace('/user/create-profile')
           }
           const data = res.data.allPerson
-          setWorkerDetails(data || [])
+          setWorkerDetails(res.data.allWorker || [])
         } catch (err) {
-          console.error("API error:", err)
         } finally {
           setLoader(false)
         }
@@ -102,8 +101,7 @@ export default function UserProfilePage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
                   whileHover={{ y: -5 }}
-                  onClick={() => router.push(`/worker/details/${worker.id}`)}
-                  className="cursor-pointer group relative"
+                    className=" group relative"
                 >
                   <div className="h-full bg-slate-900/40 backdrop-blur-md border border-white/5 rounded-[1.5rem] p-5 transition-all hover:bg-slate-900/60 hover:border-white/20 shadow-xl flex flex-col">
 
@@ -118,11 +116,11 @@ export default function UserProfilePage() {
 
                     <div className="text-center mb-4">
                       <h3 className="text-2xl font-bold text-white mb-0.5 group-hover:text-emerald-400 transition-colors truncate">
-                        {worker.occupation}
+                        {worker.occupation.toUpperCase().trim()}
                       </h3>
-                      <div className="flex items-center justify-center gap-1.5 text-slate-400 text-[14px] font-medium uppercase tracking-wider">
+                      <div className="flex items-center justify-center gap-1.5 text-slate-400 text-[14px] font-medium  tracking-wider">
                         <Briefcase size={12} className="text-indigo-400" />
-                        Worker name: {worker.name}
+                        Worker name: {worker.name.charAt(0).toUpperCase()+ worker.name.slice(1)}
                       </div>
                     </div>
 
