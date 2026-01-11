@@ -46,7 +46,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     } else if (normalizedRole === 'worker') {
         userDetails = await prisma.myWorker.findUnique({
             where: { userId: person.id },
-            select: { name: true, mobileNumber: true, occupation: true,address:true , dailyWage: true, role: true, age: true , lat:true , lan:true }
+            select: { name: true, mobileNumber: true, occupation: true,address:true , experience:true , hourlyWages:true, dailyWage: true, role: true, age: true , lat:true , lan:true }
         });
         if(!userDetails){
             return NextResponse.json({

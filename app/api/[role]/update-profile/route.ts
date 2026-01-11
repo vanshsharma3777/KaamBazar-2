@@ -126,8 +126,10 @@ export async function PUT(request:NextRequest , {params}:{params:Promise <{role:
         const body = await request.json();
         console.log("BODY:", body);
 
-        const { name, mobileNumber, age, dailyWage, occupation , lat , lng, address} = body
+        const { name, mobileNumber, age, dailyWage, occupation , hourlyWages, experience,  lat , lng, address} = body
         const wages = Number(dailyWage)
+        const experienceInNumber = Number(experience)
+        const hourlyWagesInNumber = Number(hourlyWages)
         const updatedworker = await prisma.myWorker.update({
             where: {
                 userId: existingPerson.id!
@@ -137,6 +139,8 @@ export async function PUT(request:NextRequest , {params}:{params:Promise <{role:
                 mobileNumber,
                 occupation,
                 dailyWage:wages,
+                experience:experienceInNumber,
+                hourlyWages:hourlyWagesInNumber,
                 lat:lat,
                 lan:lng,
                 address,
@@ -146,6 +150,8 @@ export async function PUT(request:NextRequest , {params}:{params:Promise <{role:
                 name:true,
                 mobileNumber:true,
                 occupation:true,
+                experience,
+                hourlyWages,
                 address:true,
                 dailyWage:true,
                 age:true

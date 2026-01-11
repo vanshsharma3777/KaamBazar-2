@@ -99,6 +99,8 @@ model MyWorker {
   lan          Float?
   occupation   String
   address      String?
+  experience   Float?
+  hourlyWages  Float?
   role         String?
   dailyWage    Float
   age          Int?
