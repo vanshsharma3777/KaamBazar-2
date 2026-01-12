@@ -28,6 +28,8 @@ export default function UserProfilePage() {
     address: string,
     role: string,
     photo: string,
+    hourlyWages:number,
+    experience:number,
     dailyWage: number,
     age: number
   }
@@ -141,6 +143,10 @@ export default function UserProfilePage() {
                       <div>
                         <p className="text-[12px] uppercase text-slate-500 font-bold leading-none mb-1">Daily Wage</p>
                         <p className="text-base font-black text-white">₹{worker.dailyWage}</p>
+                      </div>
+                      <div>
+                        <p className="text-[12px] uppercase text-slate-500 font-bold leading-none mb-1">Per Hour Wage</p>
+                        <p className="text-base font-black text-white">₹{worker.hourlyWages}</p>
                       </div>
                       <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white transition-all">
                         <ChevronRight size={18} />
