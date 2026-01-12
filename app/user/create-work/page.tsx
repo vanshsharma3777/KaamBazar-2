@@ -10,12 +10,10 @@ import { useEffect, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import {
     PlusCircle,
-    FileText,
     Image as ImageIcon,
     Send,
     X,
     AlertCircle,
-    CheckCircle2
 } from 'lucide-react';
 import getLatitudeLongitude from "@/lib/getLatitudeLongitude";
 import { Loader } from "@/components/loader";
@@ -27,29 +25,6 @@ interface UserDetails {
     lat: number
     lng: number
 }
-interface VendorDetails {
-    mobileNumber: string,
-    address: string,
-    shopName: string,
-    role: string,
-    rating: number,
-    age: number,
-    name: string,
-
-}
-interface WorkerDetails {
-    name: string,
-    mobileNumber: string,
-    lat: number,
-    lan: number,
-    occupation: string,
-    address: string,
-    role: string,
-    dailyWage: number,
-    age: number
-}
-
-
 
 export default function Dashboard() {
     const role = 'user'

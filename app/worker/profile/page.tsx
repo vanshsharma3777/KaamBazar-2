@@ -18,7 +18,8 @@ import {
     Calendar,
     UserCog,
     Building2,
-    Users
+    Users,
+    TimerReset
 } from 'lucide-react';
 import WorkerHeader from "@/components/workerHeader";
 
@@ -27,6 +28,8 @@ export default function WorkerProfilePage() {
         name: string;
         address: string;
         mobileNumber: string;
+        hourlyWages:number
+        experience:number
         occupation: string;
         dailyWage: string;
         age: string;
@@ -45,6 +48,7 @@ export default function WorkerProfilePage() {
             } else if (status === 'authenticated') {
                 try {
                     const res = await axios.get(`/api/worker/details`);
+                    console.log(res.data)
                     const data = res.data.userDetails;
                     if (res.data.success === true && res.status===201 ) {
                         router.replace('/worker/create-profile');
@@ -136,14 +140,13 @@ export default function WorkerProfilePage() {
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 md:gap-y-8 gap-x-4">
                                     <InfoItem icon={<Briefcase className="text-blue-400" />} label="Occupation" value={capitalName(workerDetails?.occupation!, "Worker")} />
                                     <InfoItem icon={<IndianRupee className="text-emerald-400" />} label="Daily Wage" value={`${workerDetails?.dailyWage} / Day`} />
+                                    <InfoItem icon={<IndianRupee className="text-purple-400" />} label="hourly Wage" value={`${workerDetails?.hourlyWages} `} />
                                     <InfoItem icon={<Phone className="text-cyan-400" />} label="Phone Number" value={workerDetails?.mobileNumber!} />
                                     <InfoItem icon={<Calendar className="text-purple-400" />} label="Age" value={`${workerDetails?.age} Years`} />
-                                    <div className="md:col-span-2">
-                                        <InfoItem icon={<MapPin className="text-rose-400" />} label="Work Address" value={workerDetails?.address ? capitalName(workerDetails.address, "Unable to fetch") : "Unable to fetch"} />
-                                    </div>
-                                    <div className="md:col-span-2">
-                                        <InfoItem icon={<Mail className="text-indigo-400" />} label="Email Address" value={session.user?.email!} />
-                                    </div>
+                                    <InfoItem icon={<TimerReset className="text-purple-400" />} label="experience" value={`${workerDetails?.experience} Years`} />
+                                    <InfoItem icon={<MapPin className="text-rose-400" />} label="Work Address" value={workerDetails?.address ? capitalName(workerDetails.address, "Unable to fetch") : "Unable to fetch"} />
+                                    <InfoItem icon={<Mail className="text-indigo-400" />} label="Email Address" value={session.user?.email!} />
+                                    
                                 </div>
                             </motion.div>
                             <motion.div

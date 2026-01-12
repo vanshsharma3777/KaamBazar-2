@@ -13,7 +13,8 @@ import {
   ArrowLeft,
   Briefcase,
   IndianRupee,
-  Calendar
+  Calendar,
+  TimerReset
 } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { Loader } from '@/components/loader';
@@ -28,6 +29,8 @@ export default function CreateWorkerProfilePage() {
     address: '',
     mobileNumber: '',
     occupation: '',
+    hourlyWage:0.0,
+    experience:0.0,
     dailyWage: '',
     age: ''
   });
@@ -47,7 +50,8 @@ export default function CreateWorkerProfilePage() {
   const handleNumberInput = (e: React.ChangeEvent<HTMLInputElement>, field: string, maxLength?: number) => {
     const value = e.target.value;
     if (value === "" || /^\d*$/.test(value)) {
-      if (maxLength && value.length > maxLength) return;
+      if (maxLength && value.length > maxLength) 
+        return;
       setFormData({ ...formData, [field]: value });
     }
   };
@@ -60,8 +64,8 @@ export default function CreateWorkerProfilePage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { name, address, mobileNumber, occupation, dailyWage, age } = formData;
-    if (!name || !address || !mobileNumber || !occupation || !dailyWage || !age) {
+    const { name, address, mobileNumber, occupation, dailyWage, age , experience , hourlyWage } = formData;
+    if (!name || !address || !mobileNumber || !occupation || !dailyWage || !experience || !hourlyWage || !age) {
       toast.error("Please fill all fields");
       return;
     }
@@ -153,7 +157,7 @@ export default function CreateWorkerProfilePage() {
                   </div>
                 </div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Occupation</label>
                     <div className="relative group">
@@ -182,6 +186,20 @@ export default function CreateWorkerProfilePage() {
                     />
                   </div>
                 </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Experience</label>
+                  <div className="relative group">
+                    <TimerReset className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-400 w-5 h-5" />
+                    <input
+                      type="text"
+                      
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-4 focus:outline-none focus:border-blue-500/50 transition-all"
+                      placeholder='Experience (years)'
+                      value={formData.experience}
+                      onChange={(e) => handleNumberInput(e, 'experience', 2)}
+                    />
+                  </div>
+                </div>
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Daily Wage (In Rupees)</label>
@@ -193,7 +211,21 @@ export default function CreateWorkerProfilePage() {
                     className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-4 focus:outline-none focus:border-blue-500/50 transition-all font-bold text-blue-400"
                     placeholder="500"
                     value={Number(formData.dailyWage)}
-                    onChange={(e) => handleNumberInput(e, 'dailyWage', 5)}
+                    onChange={(e) => handleNumberInput(e, 'dailyWage', 4)}
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Per Hour Wage (In Rupees)</label>
+                <div className="relative group">
+                  <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-400 w-5 h-5" />
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-4 focus:outline-none focus:border-blue-500/50 transition-all font-bold text-blue-400"
+                    placeholder="200"
+                    value={Number(formData.hourlyWage)}
+                    onChange={(e) => handleNumberInput(e, 'hourlyWage', 4)}
                   />
                 </div>
               </div>
